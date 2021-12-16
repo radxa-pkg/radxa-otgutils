@@ -7,10 +7,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Fix permission
+        run: sudo chown -R root:root ./dpkg
       - name: Build dpkg
         run: dpkg-deb --build ./dpkg
       - name: Upload dpkg
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.BOARD }}-${{ matrix.MODEL }}
+          name: dpkg
           path: ./dpkg.deb
