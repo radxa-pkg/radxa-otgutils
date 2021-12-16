@@ -13,4 +13,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.BOARD }}-${{ matrix.MODEL }}
-          path: ./radxa-usbnet_*_all.deb
+          path: ./dpkg.deb
