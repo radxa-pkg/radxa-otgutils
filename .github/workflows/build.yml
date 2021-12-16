@@ -8,7 +8,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build dpkg
-        run: cd dpkg && dpkg-buildpackage --no-sign
+        run: dpkg-deb --build ./dpkg
       - name: Upload dpkg
         uses: actions/upload-artifact@v2
         with:
