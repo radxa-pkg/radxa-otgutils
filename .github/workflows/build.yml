@@ -1,23 +1,20 @@
-name: Build and publish
+name: Build
 on:
   workflow_dispatch:
+  push:
+    paths-ignore:
+      - 'VERSION'
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set variables
-        run: echo "VERSION=$(date +%Y%m%d-%H%M)" >> $GITHUB_ENV
-      - name: Fix permission
-        run: sudo chown -R root:root ./dpkg
-      - name: Build dpkg
-        run: dpkg-deb --build ./dpkg
-      - name: Release
-        uses: ncipollo/release-action@v1
+        uses: actions/checkout@v3
         with:
-          artifacts: './dpkg.deb'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ env.VERSION }}
-          bodyFile: './README.md'
-          commit: main
+          submodules: recursive
+      - name: Install dependency
+        run: |
+          sudo gem i fpm -f
+      - name: Build
+        run: make

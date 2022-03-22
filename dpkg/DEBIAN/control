@@ -1,8 +1,0 @@
-Package: radxa-usbnet
-Version: 0.1-1
-Maintainer: Yuntian Zhang <yt@radxa.com>
-Architecture: all
-Section: utils
-Component: main
-Priority: optional
-Description: Enable USB ethernet gadget on selected Radxa single board computers.

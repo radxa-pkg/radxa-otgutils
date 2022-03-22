@@ -1,0 +1,12 @@
+[Unit]
+Description=Enable USB ethernet gadget on selected Radxa single board computers
+Documentation=https://wiki.radxa.com/Template:Rockpi_apt
+After=network.target
+Conflicts=amlogic-adbd.service
+[Service]
+Type=forking
+ExecStart=/usr/sbin/radxa-usbnet.sh start
+ExecStop=/usr/sbin/radxa-usbnet.sh stop
+ExecReload=/usr/sbin/radxa-usbnet.sh reload
+[Install]
+WantedBy=multi-user.target

@@ -1,5 +1,0 @@
-radxa-usbnet (0.1) testing; urgency=low
-
-  * Add support for USB ethernet gadget. 
-
- -- Yuntian Zhang <yt@radxa.comm>  Thu, 16 Dec 2021 12:00:00 +0800
