@@ -9,7 +9,7 @@ all:
 	fpm -s dir -t deb -n $(NAME) -v $(VERSION) \
 		-p $(NAME)_$(VERSION)_all.deb \
 		--deb-priority optional --category utils \
-		--before-remove prerm.sh \
+		--depends android-tools-adbd \
 		--force \
 		--deb-field "Multi-Arch: foreign" \
 		--deb-field "Replaces: $(NAME)" \

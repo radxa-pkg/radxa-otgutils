@@ -1,13 +1,15 @@
-# radxa-usbnet
+# radxa-otgutils
 
-[![Build](https://github.com/radxa-pkg/radxa-usbnet/actions/workflows/build.yml/badge.svg)](https://github.com/radxa-pkg/radxa-usbnet/actions/workflows/build.yml) [![Release](https://github.com/radxa-pkg/radxa-usbnet/actions/workflows/release.yml/badge.svg)](https://github.com/radxa-pkg/radxa-usbnet/actions/workflows/release.yml)
+[![Build](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/build.yml/badge.svg)](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/build.yml) [![Release](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/release.yml/badge.svg)](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/release.yml)
 
-Enable USB ethernet gadget on selected Radxa single board computers
+Enable USB gadget on OTG port.
 
 # Usage
-This service conflicts with `amlogic-adbd`. As such please run the following command to enable it:
-```
-sudo systemctl disable amlogic-adbd
-sudo systemctl enable radxa-usbnet
-```
-The device will be available after reboot.
+
+The following gadgets are provided:
+* radxa-adbd
+* radxa-usbnet
+
+They can be enabled with `sudo systemctl enable --now <gadget>`, and disabled with `sudo systemctl disable --now <gadget>`.
+
+Please be aware than those gadgets are mutually exclusive. If one is already enabled you have to diable then reboot before you can enable anyther gadget.
