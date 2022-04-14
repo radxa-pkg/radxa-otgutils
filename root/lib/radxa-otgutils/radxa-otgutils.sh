@@ -71,7 +71,7 @@ start()
 
     local UDC=$(ls /sys/class/udc/ | head -1)
     echo $UDC > /sys/kernel/config/usb_gadget/radxa-$MODE/UDC
-)
+}
 
 stop()
 {
