@@ -70,6 +70,10 @@ start()
     esac
 
     local UDC=$(ls /sys/class/udc/ | head -1)
+    if [ -z "$UDC" ] ; then
+        echo "UDC is NULL"
+        exit
+    fi
     echo $UDC > /sys/kernel/config/usb_gadget/radxa-$MODE/UDC
 }
 
