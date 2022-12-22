@@ -70,9 +70,10 @@ start()
     esac
 
     local UDC=$(ls /sys/class/udc/ | head -1)
-    if [ -z "$UDC" ] ; then
-        echo "UDC is NULL"
-        exit
+    if [ -z "$UDC" ]; 
+    then
+        echo "No USB Device Controller was detected. Did you set your OTG port to host mode?"
+        exit 1
     fi
     echo $UDC > /sys/kernel/config/usb_gadget/radxa-$MODE/UDC
 }
