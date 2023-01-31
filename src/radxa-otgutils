@@ -50,8 +50,8 @@ function_init()
 
     if [ ! -e "/sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1/$GADGET" ];
     then
-        mkdir -p /sys/kernel/config/usb_gadget/radxa-$MODE/functions/$GADGET
-        ln -s /sys/kernel/config/usb_gadget/radxa-$MODE/functions/$GADGET /sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1
+        mkdir -p "/sys/kernel/config/usb_gadget/radxa-$MODE/functions/$GADGET"
+        ln -s "/sys/kernel/config/usb_gadget/radxa-$MODE/functions/$GADGET" "/sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1"
     fi
 }
 
@@ -79,12 +79,12 @@ start()
         echo "No USB Device Controller was detected. Did you set your OTG port to host mode?"
         exit 1
     fi
-    echo $UDC > /sys/kernel/config/usb_gadget/radxa-$MODE/UDC
+    echo "$UDC" > "/sys/kernel/config/usb_gadget/radxa-$MODE/UDC"
 }
 
 stop()
 {
-    echo "none" > /sys/kernel/config/usb_gadget/radxa-$MODE/UDC
+    echo "none" > "/sys/kernel/config/usb_gadget/radxa-$MODE/UDC"
     case "$MODE" in
         adbd)
             start-stop-daemon --stop --oknodo --pidfile /var/run/adbd.pid --retry 5
@@ -93,7 +93,7 @@ stop()
 }
 
 MODE=
-case "$(basename $0)" in
+case "$(basename "$0")" in
     radxa-adbd.sh)
         MODE=adbd
         ;;
