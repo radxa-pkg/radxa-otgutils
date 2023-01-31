@@ -15,18 +15,22 @@ configfs_init()
             ;;
     esac
 
-    mkdir -p /sys/kernel/config/usb_gadget/radxa-$MODE -m 0770
+    mkdir -p /sys/kernel/config/usb_gadget/radxa-$MODE
+    chmod 0770 /sys/kernel/config/usb_gadget/radxa-$MODE
     echo "$VENDOR" > /sys/kernel/config/usb_gadget/radxa-$MODE/idVendor
     echo "$PRODUCT" > /sys/kernel/config/usb_gadget/radxa-$MODE/idProduct
-    mkdir -p /sys/kernel/config/usb_gadget/radxa-$MODE/strings/0x409 -m 0770
+    mkdir -p /sys/kernel/config/usb_gadget/radxa-$MODE/strings/0x409
+    chmod 0770 /sys/kernel/config/usb_gadget/radxa-$MODE/strings/0x409
     echo "Radxa" > /sys/kernel/config/usb_gadget/radxa-$MODE/strings/0x409/manufacturer
     echo "$MODE" > /sys/kernel/config/usb_gadget/radxa-$MODE/strings/0x409/product
-    mkdir -p /sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1 -m 0770
+    mkdir -p /sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1
+    chmod 0770 /sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1
 
     case "$MODE" in
         adbd)
             echo "0123456789ABCDEF" > /sys/kernel/config/usb_gadget/radxa-$MODE/strings/0x409/serialnumber
-            mkdir -p /sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1/strings/0x409 -m 0770
+            mkdir -p /sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1/strings/0x409
+            chmod 0770 /sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1/strings/0x409
             echo "500" > /sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1/MaxPower
             echo "adb" > /sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1/strings/0x409/configuration
             ;;
