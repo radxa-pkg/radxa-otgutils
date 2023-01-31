@@ -1,0 +1,7 @@
+/.debhelper
+/debhelper-build-stamp
+/files
+/radxa-otgutils
+/*.debhelper.log
+/*.postrm.debhelper
+/*.substvars

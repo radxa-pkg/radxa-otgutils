@@ -1,23 +1,74 @@
-MAKEFLAGS += --silent
+PROJECT ?= radxa-otgutils
+PREFIX ?= /usr
+BINDIR ?= $(PREFIX)/bin
+LIBDIR ?= $(PREFIX)/lib
+MANDIR ?= $(PREFIX)/share/man
 
-NAME = $(shell cat NAME)
-VERSION = $(shell cat VERSION)
-URL = https://github.com/radxa-pkg/radxa-usbnet
-DESCRIPTION = Enable USB ethernet gadget on selected Radxa single board computers
+.PHONY: all
+all: build
 
-all:
-	fpm -s dir -t deb -n $(NAME) -v $(VERSION) \
-		-a all \
-		--deb-priority optional --category utils \
-		--depends android-tools-adbd \
-		--deb-field "Multi-Arch: foreign" \
-		--deb-field "Replaces: $(NAME)" \
-		--deb-field "Conflicts: $(NAME)" \
-		--deb-field "Provides: $(NAME)" \
-		--url $(URL) \
-		--description "$(DESCRIPTION)" \
-		--license "GPL-2+" \
-		-m "Radxa <dev@radxa.com>" \
-		--vendor "Radxa" \
-		--force \
-		./root/=/
+#
+# Test
+#
+.PHONY: test
+test:
+	shellcheck --source-path=./src --external-sources src/radxa-otgutils
+
+#
+# Build
+#
+.PHONY: build
+build: build-man build-doc
+
+SRC-MAN		:=	man
+SRCS-MAN	:=	$(wildcard $(SRC-MAN)/*.md)
+MANS		:=	$(SRCS-MAN:.md=)
+.PHONY: build-man
+build-man: $(MANS)
+
+$(SRC-MAN)/%: $(SRC-MAN)/%.md
+	pandoc "$<" -o "$@" --from markdown --to man -s
+
+SRC-DOC		:=	src
+DOCS		:=	$(SRC-DOC)/SOURCE
+.PHONY: build-doc
+build-doc: $(DOCS)
+
+$(SRC-DOC):
+	mkdir -p $(SRC-DOC)
+
+.PHONY: $(SRC-DOC)/SOURCE
+$(SRC-DOC)/SOURCE: $(SRC-DOC)
+	echo -e "git clone $(shell git remote get-url origin)\ngit checkout $(shell git rev-parse HEAD)" > "$@"
+
+#
+# Clean
+#
+.PHONY: distclean
+distclean: clean
+
+.PHONY: clean
+clean: clean-man clean-doc clean-deb
+
+.PHONY: clean-man
+clean-man:
+	rm -rf $(MANS)
+
+.PHONY: clean-doc
+clean-doc:
+	rm -rf $(DOCS)
+
+.PHONY: clean-deb
+clean-deb:
+	rm -rf debian/.debhelper debian/${PROJECT} debian/debhelper-build-stamp debian/files debian/*.debhelper.log debian/*.postrm.debhelper debian/*.substvars
+
+#
+# Release
+#
+.PHONY: dch
+dch: debian/changelog
+	gbp dch --debian-branch=main
+
+.PHONY: deb
+deb: debian
+	debuild --no-lintian --lintian-hook "lintian --fail-on error,warning --suppress-tags bad-distribution-in-changes-file -- %p_%v_*.changes" --no-sign

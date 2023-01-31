@@ -1,0 +1,20 @@
+Source: radxa-otgutils
+Maintainer: "Radxa Computer Co., Ltd" <dev@radxa.com>
+Section: admin
+Priority: standard
+Standards-Version: 4.6.0
+Build-Depends: debhelper (>=12~),
+               devscripts,
+               lintian,
+               pandoc,
+               shellcheck,
+
+Package: radxa-otgutils
+Architecture: all
+Section: admin
+Priority: standard
+Depends: ${misc:Depends},
+Description: Radxa USB OTG utility
+ Radxa USB OTG utility (radxa-otgutils) provides additional
+ features over USB OTG port to facilitate easy communication
+ with another computer.

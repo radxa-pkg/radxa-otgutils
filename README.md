@@ -1,12 +1,12 @@
 # radxa-otgutils
 
-[![Build](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/build.yml/badge.svg)](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/build.yml) [![Release](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/release.yml/badge.svg)](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/release.yml)
+[![Build & Release](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/release.yml/badge.svg)](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/release.yml)
 
-Enable USB gadget on OTG port.
+Radxa USB OTG utility (radxa-otgutils) provides additional features over USB OTG port to facilitate easy cmmunication with another computer.
 
 # Usage
 
-The following gadgets are provided:
+The following gadgets are supported:
 * radxa-adbd
 * radxa-usbnet
 

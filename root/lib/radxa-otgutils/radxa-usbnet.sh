@@ -1,1 +1,0 @@
-radxa-otgutils.sh
