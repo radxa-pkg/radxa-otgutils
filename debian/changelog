@@ -1,3 +1,11 @@
+radxa-otgutils (0.2.1) stable; urgency=medium
+
+  * Add android-tools-adbd to recommends
+  * Fix "Unknown script name" error
+  * Check adbd dependency before running
+
+ -- "Radxa Computer Co., Ltd" <dev@radxa.com>  Sun, 12 Mar 2023 17:50:30 +0800
+
 radxa-otgutils (0.2.0) stable; urgency=medium
 
   * Switching to Debian release format
