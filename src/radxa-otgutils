@@ -96,6 +96,11 @@ stop()
 MODE=
 case "$(basename "$0")" in
     radxa-adbd)
+        if [[ ! -e /usr/bin/adbd ]]
+        then
+            echo "Did not find adbd. Please check if related packages are installed."
+            exit 1
+        fi
         MODE=adbd
         ;;
     radxa-usbnet)
