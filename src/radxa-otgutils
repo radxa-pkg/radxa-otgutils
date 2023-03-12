@@ -95,13 +95,13 @@ stop()
 
 MODE=
 case "$(basename "$0")" in
-    radxa-adbd.sh)
+    radxa-adbd)
         MODE=adbd
         ;;
-    radxa-usbnet.sh)
+    radxa-usbnet)
         MODE=usbnet
         ;;
-    radxa-otgutils.sh)
+    radxa-otgutils)
         echo Please run this script from symbolic links.
         exit 1
         ;;
