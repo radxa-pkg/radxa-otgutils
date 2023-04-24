@@ -41,7 +41,7 @@ function_init()
     if [ ! -e "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/$GADGET" ];
     then
         mkdir -p "/sys/kernel/config/usb_gadget/radxa-otgutils/functions/$GADGET"
-        ln -s "/sys/kernel/config/usb_gadget/radxa-otgutils/functions/$GADGET" "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1"
+        ln -s "/sys/kernel/config/usb_gadget/radxa-otgutils/functions/$GADGET" "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/$GADGET"
     fi
 }
 
