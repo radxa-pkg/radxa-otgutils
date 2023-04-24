@@ -4,7 +4,7 @@ Documentation=https://github.com/radxa-pkg/radxa-otgutils/
 After=network.target
 
 [Service]
-Type=forking
+RemainAfterExit=yes
 ExecStart=/usr/sbin/radxa-adbd start
 ExecStop=/usr/sbin/radxa-adbd stop
 ExecReload=/usr/sbin/radxa-adbd reload
