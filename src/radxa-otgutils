@@ -95,7 +95,7 @@ stop()
 MODE=
 case "$(basename "$0")" in
     radxa-adbd)
-        if [[ ! -e /usr/bin/adbd ]]
+        if ! command -v adbd
         then
             echo "Did not find adbd. Please check if related packages are installed."
             exit 1
