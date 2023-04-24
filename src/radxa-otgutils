@@ -106,6 +106,9 @@ stop()
     case "$MODE" in
         adbd)
             start-stop-daemon --stop --oknodo --pidfile /var/run/adbd.pid --retry 5
+            umount /dev/usb-ffs/adb
+            rmdir /dev/usb-ffs/adb
+            rmdir /dev/usb-ffs
             ;;
     esac
 }
