@@ -38,9 +38,13 @@ function_init()
             ;;
     esac
 
-    if [ ! -e "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/$GADGET" ];
+    if [ ! -e "/sys/kernel/config/usb_gadget/radxa-otgutils/functions/$GADGET" ];
     then
         mkdir -p "/sys/kernel/config/usb_gadget/radxa-otgutils/functions/$GADGET"
+    fi
+
+    if [ ! -e "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/$GADGET" ];
+    then
         ln -s "/sys/kernel/config/usb_gadget/radxa-otgutils/functions/$GADGET" "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/$GADGET"
     fi
 }
@@ -94,7 +98,7 @@ stop()
 {
     function_stop
     if [[ ! -e "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/" ]] || \
-       (( $(find /sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/* -maxdepth 0 -type d | wc -l) == 0 ))
+       (( $(find /sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/* -maxdepth 0 -type l | wc -l) == 0 ))
     then
         echo "none" > "/sys/kernel/config/usb_gadget/radxa-otgutils/UDC"
     fi
