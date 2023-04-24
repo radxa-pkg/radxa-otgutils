@@ -64,6 +64,11 @@ function_stop()
     then
         rm "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/$GADGET"
     fi
+
+    if [ -e "/sys/kernel/config/usb_gadget/radxa-otgutils/functions/$GADGET" ];
+    then
+        rmdir "/sys/kernel/config/usb_gadget/radxa-otgutils/functions/$GADGET"
+    fi
 }
 
 start()
@@ -97,11 +102,7 @@ start()
 stop()
 {
     function_stop
-    if [[ ! -e "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/" ]] || \
-       (( $(find /sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/* -maxdepth 0 -type l | wc -l) == 0 ))
-    then
-        echo "none" > "/sys/kernel/config/usb_gadget/radxa-otgutils/UDC"
-    fi
+
     case "$MODE" in
         adbd)
             start-stop-daemon --stop --oknodo --pidfile /var/run/adbd.pid --retry 5
