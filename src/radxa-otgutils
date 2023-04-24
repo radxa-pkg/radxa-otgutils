@@ -96,7 +96,7 @@ start()
         echo "No USB Device Controller was detected. Did you set your OTG port to host mode?"
         exit 1
     fi
-    echo "$UDC" > "/sys/kernel/config/usb_gadget/radxa-otgutils/UDC"
+    echo "$UDC" > "/sys/kernel/config/usb_gadget/radxa-otgutils/UDC" || true
 }
 
 stop()
