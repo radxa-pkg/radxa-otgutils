@@ -4,37 +4,45 @@ configfs_init()
 {
     modprobe libcomposite
 
+    mkdir -p "/sys/kernel/config/usb_gadget/radxa-otgutils"
+    pushd "/sys/kernel/config/usb_gadget/radxa-otgutils"
+
+    echo "0x1d6b" > "idVendor"  # Linux Foundation
+    echo "0x0104" > "idProduct" # Multifunction Composite Gadget
+    echo "0x0100" > "bcdDevice" # v1.0.0
+    echo "0x0200" > "bcdUSB"    # USB 2.0
+    echo "0xEF" > "bDeviceClass"
+    echo "0x02" > "bDeviceSubClass"
+    echo "0x01" > "bDeviceProtocol"
+
+    mkdir -p "strings/0x409"
+    echo "0123456789ABCDEF" > "strings/0x409/serialnumber"
+    echo "Radxa" > "strings/0x409/manufacturer"
+    echo "OTG Utils" > "strings/0x409/product"
+
+    mkdir -p "configs/r.1/strings/0x409"
+    echo "500" > "configs/r.1/MaxPower"
+    echo "adb" > "configs/r.1/strings/0x409/configuration"
+
+    popd
+}
+
+function_init()
+{
     case "$MODE" in
         adbd)
-            local VENDOR="0x18d1"
-            local PRODUCT="0x0001"
+            local GADGET="ffs.adb"
             ;;
         usbnet)
-            local VENDOR="0x1d6b"
-            local PRODUCT="0x0104"
+            local GADGET="ecm.usb0"
             ;;
     esac
 
-    mkdir -p "/sys/kernel/config/usb_gadget/radxa-$MODE"
-    chmod 0770 "/sys/kernel/config/usb_gadget/radxa-$MODE"
-    echo "$VENDOR" > "/sys/kernel/config/usb_gadget/radxa-$MODE/idVendor"
-    echo "$PRODUCT" > "/sys/kernel/config/usb_gadget/radxa-$MODE/idProduct"
-    mkdir -p "/sys/kernel/config/usb_gadget/radxa-$MODE/strings/0x409"
-    chmod 0770 "/sys/kernel/config/usb_gadget/radxa-$MODE/strings/0x409"
-    echo "Radxa" > "/sys/kernel/config/usb_gadget/radxa-$MODE/strings/0x409/manufacturer"
-    echo "$MODE" > "/sys/kernel/config/usb_gadget/radxa-$MODE/strings/0x409/product"
-    mkdir -p "/sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1"
-    chmod 0770 "/sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1"
-
-    case "$MODE" in
-        adbd)
-            echo "0123456789ABCDEF" > "/sys/kernel/config/usb_gadget/radxa-$MODE/strings/0x409/serialnumber"
-            mkdir -p "/sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1/strings/0x409"
-            chmod 0770 "/sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1/strings/0x409"
-            echo "500" > "/sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1/MaxPower"
-            echo "adb" > "/sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1/strings/0x409/configuration"
-            ;;
-    esac
+    if [ ! -e "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/$GADGET" ];
+    then
+        mkdir -p "/sys/kernel/config/usb_gadget/radxa-otgutils/functions/$GADGET"
+        ln -s "/sys/kernel/config/usb_gadget/radxa-otgutils/functions/$GADGET" "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1"
+    fi
 }
 
 function_stop()
@@ -79,12 +87,17 @@ start()
         echo "No USB Device Controller was detected. Did you set your OTG port to host mode?"
         exit 1
     fi
-    echo "$UDC" > "/sys/kernel/config/usb_gadget/radxa-$MODE/UDC"
+    echo "$UDC" > "/sys/kernel/config/usb_gadget/radxa-otgutils/UDC"
 }
 
 stop()
 {
-    echo "none" > "/sys/kernel/config/usb_gadget/radxa-$MODE/UDC"
+    function_stop
+    if [[ ! -e "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/" ]] || \
+       (( $(find /sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/* -maxdepth 0 -type d | wc -l) == 0 ))
+    then
+        echo "none" > "/sys/kernel/config/usb_gadget/radxa-otgutils/UDC"
+    fi
     case "$MODE" in
         adbd)
             start-stop-daemon --stop --oknodo --pidfile /var/run/adbd.pid --retry 5

@@ -2,7 +2,6 @@
 Description=Enable USB Ethernet on supported Radxa products
 Documentation=https://github.com/radxa-pkg/radxa-otgutils/
 After=network.target
-Conflicts=radxa-adbd.service
 
 [Service]
 Type=forking
