@@ -37,7 +37,7 @@ configfs_init()
     esac
 }
 
-function_init()
+function_stop()
 {
     case "$MODE" in
         adbd)
@@ -48,10 +48,9 @@ function_init()
             ;;
     esac
 
-    if [ ! -e "/sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1/$GADGET" ];
+    if [ -e "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/$GADGET" ];
     then
-        mkdir -p "/sys/kernel/config/usb_gadget/radxa-$MODE/functions/$GADGET"
-        ln -s "/sys/kernel/config/usb_gadget/radxa-$MODE/functions/$GADGET" "/sys/kernel/config/usb_gadget/radxa-$MODE/configs/r.1"
+        rm "/sys/kernel/config/usb_gadget/radxa-otgutils/configs/r.1/$GADGET"
     fi
 }
 
