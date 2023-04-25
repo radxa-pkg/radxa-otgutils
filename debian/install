@@ -1,2 +1,2 @@
-src/radxa-* /usr/sbin
+src/radxa-otgutils /usr/sbin
 man/*.8 /usr/share/man/man8

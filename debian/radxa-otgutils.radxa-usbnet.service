@@ -5,9 +5,9 @@ After=network.target
 
 [Service]
 RemainAfterExit=yes
-ExecStart=/usr/sbin/radxa-usbnet start
-ExecStop=/usr/sbin/radxa-usbnet stop
-ExecReload=/usr/sbin/radxa-usbnet reload
+ExecStart=/usr/sbin/radxa-otgutils usbnet start
+ExecStop=/usr/sbin/radxa-otgutils usbnet stop
+ExecReload=/usr/sbin/radxa-otgutils usbnet reload
 
 [Install]
 WantedBy=multi-user.target
