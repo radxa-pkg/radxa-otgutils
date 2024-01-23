@@ -1,5 +1,5 @@
 [Unit]
-Description=Enable adbd on supported Radxa products
+Description=Enable adbd on %i
 Documentation=https://github.com/radxa-pkg/radxa-otgutils/
 After=network.target
 
