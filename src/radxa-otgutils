@@ -1,10 +1,18 @@
 #!/bin/bash -e
 
+lockdir() {
+    exec 7<"/sys/kernel/config/usb_gadget/$UDC" && flock 7 && echo "Locked: /sys/kernel/config/usb_gadget/$UDC" || echo "Failed to lock: /sys/kernel/config/usb_gadget/$UDC"
+}
+
+unlockdir() {
+    exec 7<&- && echo "Unlocked: /sys/kernel/config/usb_gadget/$UDC" || echo "Failed to unlock: /sys/kernel/config/usb_gadget/$UDC"
+}
 configfs_init()
 {
     modprobe libcomposite
 
     mkdir -p "/sys/kernel/config/usb_gadget/$UDC"
+    lockdir
     pushd "/sys/kernel/config/usb_gadget/$UDC"
 
     echo "0x1d6b" > "idVendor"  # Linux Foundation
@@ -25,6 +33,7 @@ configfs_init()
     echo "adb" > "configs/r.1/strings/0x409/configuration"
 
     popd
+    unlockdir
 }
 
 function_init()
@@ -38,6 +47,7 @@ function_init()
             ;;
     esac
 
+    lockdir
     if [ ! -e "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET" ];
     then
         mkdir -p "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET"
@@ -47,6 +57,7 @@ function_init()
     then
         ln -s "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET" "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/$GADGET"
     fi
+    unlockdir
 }
 
 function_stop()
@@ -60,6 +71,7 @@ function_stop()
             ;;
     esac
 
+    lockdir
     if [ -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/$GADGET" ];
     then
         rm "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/$GADGET"
@@ -79,6 +91,7 @@ function_stop()
     else
         echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
     fi
+    unlockdir
 }
 
 start()
@@ -99,12 +112,14 @@ start()
             ;;
     esac
 
+    lockdir
     if [[ -n $(cat "/sys/kernel/config/usb_gadget/$UDC/UDC") ]];
     then
         echo "Unregister: /sys/kernel/config/usb_gadget/$UDC/UDC"
         echo "" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
     fi
     echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
+    unlockdir
 }
 
 stop()
