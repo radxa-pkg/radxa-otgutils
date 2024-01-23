@@ -99,10 +99,10 @@ start()
             ;;
     esac
 
-    if [[ ! $(< "/sys/kernel/config/usb_gadget/$UDC/UDC") == "" ]] ;
+    if [[ -n $(cat "/sys/kernel/config/usb_gadget/$UDC/UDC") ]];
     then
         echo "Unregister: /sys/kernel/config/usb_gadget/$UDC/UDC"
-        echo "" > "/sys/kernel/config/usb_gadget/$UDC/UDC" 
+        echo "" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
     fi
     echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
 }
