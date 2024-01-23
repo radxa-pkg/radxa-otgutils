@@ -107,7 +107,7 @@ start()
                 mount -o uid=2000,gid=2000 -t functionfs adb /dev/usb-ffs/adb
             fi
             export service_adb_tcp_port=5555
-            start-stop-daemon --start --oknodo --pidfile /var/run/adbd.pid --startas /usr/bin/adbd --background
+            start-stop-daemon --start --oknodo -m --pidfile /var/run/adbd.pid --startas /usr/bin/adbd --background
             sleep 1
             ;;
     esac
@@ -127,8 +127,7 @@ stop()
     function_stop
     case "$MODE" in
         adbd)
-            killall adbd
-            # start-stop-daemon --stop --oknodo --pidfile /var/run/adbd.pid --retry 5
+            start-stop-daemon --stop --oknodo --pidfile /var/run/adbd.pid --remove-pidfile --retry 5
             umount /dev/usb-ffs/adb
             rmdir /dev/usb-ffs/adb
             rmdir /dev/usb-ffs
