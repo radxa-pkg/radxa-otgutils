@@ -1,11 +1,11 @@
 #!/bin/bash -e
 
 lockdir() {
-    exec 7<"/sys/kernel/config/usb_gadget/$UDC" && flock 7
+    exec 100<"/sys/kernel/config/usb_gadget/$UDC" && flock 100
 }
 
 unlockdir() {
-    exec 7<&-
+    exec 100<&-
 }
 
 configfs_make(){
