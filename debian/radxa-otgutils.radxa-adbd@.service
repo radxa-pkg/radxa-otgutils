@@ -5,9 +5,9 @@ After=network.target
 
 [Service]
 RemainAfterExit=yes
-ExecStart=/usr/sbin/radxa-otgutils adbd start %i
-ExecStop=/usr/sbin/radxa-otgutils adbd stop %i
-ExecReload=/usr/sbin/radxa-otgutils adbd reload %i
+ExecStart=/usr/sbin/radxa-otgutils adbd %i start
+ExecStop=/usr/sbin/radxa-otgutils adbd %i stop
+ExecReload=/usr/sbin/radxa-otgutils adbd %i reload
 
 [Install]
 WantedBy=multi-user.target

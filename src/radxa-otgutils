@@ -99,12 +99,6 @@ start()
             ;;
     esac
 
-    if [ -z "$UDC" ]; 
-    then
-        echo "No USB Device Controller was detected. Did you set your OTG port to host mode?"
-        exit 1
-    fi
-
     if [[ ! $(< "/sys/kernel/config/usb_gadget/$UDC/UDC") == "" ]] ;
     then
         echo "Unregister: /sys/kernel/config/usb_gadget/$UDC/UDC"
@@ -128,9 +122,28 @@ stop()
     esac
 }
 
-MODE="$1"
-UDC="$3"
-case "$2" in
+MODE=""
+case "$1" in
+adbd|usbnet)
+    MODE="$1"
+    ;;
+*)
+    echo "Unknown mode. Valid values are adbd or usbnet."
+    echo "Usage: $0 <adbd|usbnet> <UDC> <start|stop|restart>"
+    exit 1
+esac
+
+UDC=""
+if [ -e "/sys/class/udc/$2" ];
+then
+    UDC="$2"
+else
+    echo "This UDC does not exist, you can turn on the OTG port Peripheral mode device tree overlay at rsetup and look in the /sys/class/udc directory for."
+    echo "Usage: $0 <adbd|usbnet> <UDC> <start|stop|restart>"
+    exit 1
+fi
+
+case "$3" in
 start)
     start
     ;;
@@ -142,7 +155,7 @@ restart|reload)
     start
     ;;
 *)
-    echo "Usage: $0 <adbd|usbnet> <start|stop|restart> <UDC>"
+    echo "Usage: $0 <adbd|usbnet> <UDC> <start|stop|restart>"
     exit 1
 esac
 
