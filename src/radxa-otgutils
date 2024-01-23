@@ -1,17 +1,23 @@
 #!/bin/bash -e
 
 lockdir() {
-    exec 7<"/sys/kernel/config/usb_gadget/$UDC" && flock 7 && echo "Locked: /sys/kernel/config/usb_gadget/$UDC" || echo "Failed to lock: /sys/kernel/config/usb_gadget/$UDC"
+    exec 7<"/sys/kernel/config/usb_gadget/$UDC" && flock 7
 }
 
 unlockdir() {
-    exec 7<&- && echo "Unlocked: /sys/kernel/config/usb_gadget/$UDC" || echo "Failed to unlock: /sys/kernel/config/usb_gadget/$UDC"
+    exec 7<&-
 }
+
+configfs_make(){
+    if [ ! -e "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET" ];
+    then
+        modprobe libcomposite
+        mkdir -p "/sys/kernel/config/usb_gadget/$UDC"
+    fi
+}
+
 configfs_init()
 {
-    modprobe libcomposite
-
-    mkdir -p "/sys/kernel/config/usb_gadget/$UDC"
     pushd "/sys/kernel/config/usb_gadget/$UDC"
 
     echo "0x1d6b" > "idVendor"  # Linux Foundation
@@ -82,15 +88,15 @@ function_stop()
         rmdir "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409"
         rmdir "/sys/kernel/config/usb_gadget/$UDC/configs/r.1"
         rmdir "/sys/kernel/config/usb_gadget/$UDC/strings/0x409"
-        rmdir "/sys/kernel/config/usb_gadget/$UDC"
+        # rmdir "/sys/kernel/config/usb_gadget/$UDC"
     else
         echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
     fi
-    unlockdir
 }
 
 start()
 {
+    configfs_make
     lockdir
     configfs_init
     function_init
