@@ -142,7 +142,7 @@ restart|reload)
     start
     ;;
 *)
-    echo "Usage: $0 {start|stop|restart}"
+    echo "Usage: $0 <adbd|usbnet> <start|stop|restart> <UDC>"
     exit 1
 esac
 
