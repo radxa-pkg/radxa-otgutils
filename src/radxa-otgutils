@@ -77,7 +77,7 @@ function_stop()
         rmdir "/sys/kernel/config/usb_gadget/$UDC/strings/0x409"
         rmdir "/sys/kernel/config/usb_gadget/$UDC"
     else
-        echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC" || true
+        echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
     fi
 }
 
@@ -104,8 +104,7 @@ start()
         echo "Unregister: /sys/kernel/config/usb_gadget/$UDC/UDC"
         echo "" > "/sys/kernel/config/usb_gadget/$UDC/UDC" 
     fi
-    sleep 1
-    echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC" || true
+    echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
 }
 
 stop()
