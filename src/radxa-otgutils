@@ -19,7 +19,7 @@ add_udc()
         echo "Unregister: /sys/kernel/config/usb_gadget/$UDC/UDC"
         echo "" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
     fi
-    echo "Register: /sys/kernel/config/usb_gadget/$UDC"
+    echo "Register: /sys/kernel/config/usb_gadget/$UDC/UDC"
     echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
 }
 
