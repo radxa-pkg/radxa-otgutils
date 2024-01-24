@@ -1,16 +1,19 @@
 #!/bin/bash -e
 
-lock_udc() {
+lock_udc()
+{
     configfs_make
     exec 100<"/sys/kernel/config/usb_gadget/$UDC"
     flock 100
 }
 
-unlock_udc() {
+unlock_udc()
+{
     exec 100<&-
 }
 
-configfs_make(){
+configfs_make()
+{
     if [ ! -e "/sys/kernel/config/usb_gadget/$UDC" ];
     then
         modprobe libcomposite
