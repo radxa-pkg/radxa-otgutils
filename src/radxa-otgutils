@@ -12,6 +12,17 @@ unlock_udc()
     exec 100<&-
 }
 
+add_udc()
+{
+    if [[ -n $(cat "/sys/kernel/config/usb_gadget/$UDC/UDC") ]];
+    then
+        echo "Unregister: /sys/kernel/config/usb_gadget/$UDC/UDC"
+        echo "" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
+    fi
+    echo "Register: /sys/kernel/config/usb_gadget/$UDC"
+    echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
+}
+
 configfs_make()
 {
     if [ ! -e "/sys/kernel/config/usb_gadget/$UDC" ];
@@ -105,7 +116,7 @@ function_stop()
             rmdir "/sys/kernel/config/usb_gadget/$UDC/strings/0x409"
         fi
     else
-        echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
+        add_udc
     fi
 }
 
@@ -128,12 +139,7 @@ start()
             ;;
     esac
 
-    if [[ -n $(cat "/sys/kernel/config/usb_gadget/$UDC/UDC") ]];
-    then
-        echo "Unregister: /sys/kernel/config/usb_gadget/$UDC/UDC"
-        echo "" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
-    fi
-    echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
+    add_udc
     unlock_udc
 }
 
