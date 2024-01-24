@@ -37,7 +37,7 @@ configfs_init()
 
     mkdir -p "configs/r.1/strings/0x409"
     echo "500" > "configs/r.1/MaxPower"
-    echo "adb" > "configs/r.1/strings/0x409/configuration"
+    echo "USB Composite Device" > "configs/r.1/strings/0x409/configuration"
 
     popd
 }
