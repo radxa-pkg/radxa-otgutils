@@ -7,8 +7,9 @@ Radxa USB OTG utility (radxa-otgutils) provides additional features over USB OTG
 # Usage
 
 The following gadgets are supported:
-* radxa-adbd
-* radxa-usbnet
+
+- radxa-adbd
+- radxa-usbnet
 
 They can be enabled with `sudo systemctl enable --now <gadget>`, and disabled with `sudo systemctl disable --now <gadget>`.
 
