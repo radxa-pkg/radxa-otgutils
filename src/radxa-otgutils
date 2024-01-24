@@ -91,7 +91,7 @@ start()
 
     local UDC=
     UDC="$(basename "$(find /sys/class/udc -maxdepth 1 -mindepth 1 | sort | head -1)")"
-    if [ -z "$UDC" ]; 
+    if [ -z "$UDC" ];
     then
         echo "No USB Device Controller was detected. Did you set your OTG port to host mode?"
         exit 1

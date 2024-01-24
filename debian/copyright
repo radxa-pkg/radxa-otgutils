@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: radxa-otgutils
 Source: https://github.com/radxa-pkg/radxa-otgutils
- 
+
 Files: *
 Copyright: © 2022 Radxa Computer Co., Ltd
 License: GPL-3+
