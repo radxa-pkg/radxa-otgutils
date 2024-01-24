@@ -1,15 +1,16 @@
 #!/bin/bash -e
 
-lockdir() {
-    exec 100<"/sys/kernel/config/usb_gadget/$UDC" && flock 100
+lock_udc() {
+    exec 100<"/sys/kernel/config/usb_gadget/$UDC"
+    flock 100
 }
 
-unlockdir() {
+unlock_udc() {
     exec 100<&-
 }
 
 configfs_make(){
-    if [ ! -e "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET" ];
+    if [ ! -e "/sys/kernel/config/usb_gadget/$UDC" ];
     then
         modprobe libcomposite
         mkdir -p "/sys/kernel/config/usb_gadget/$UDC"
