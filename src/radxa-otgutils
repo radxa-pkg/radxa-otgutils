@@ -90,8 +90,6 @@ function_stop()
         rmdir "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409"
         rmdir "/sys/kernel/config/usb_gadget/$UDC/configs/r.1"
         rmdir "/sys/kernel/config/usb_gadget/$UDC/strings/0x409"
-        rmdir "/sys/kernel/config/usb_gadget/$UDC"
-        mkdir -p "/sys/kernel/config/usb_gadget/$UDC"
     else
         echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
     fi
