@@ -16,10 +16,8 @@ add_udc()
 {
     if [[ -n $(cat "/sys/kernel/config/usb_gadget/$UDC/UDC") ]];
     then
-        echo "Unregister: /sys/kernel/config/usb_gadget/$UDC/UDC"
         echo "" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
     fi
-    echo "Register: /sys/kernel/config/usb_gadget/$UDC/UDC"
     echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
 }
 
@@ -100,7 +98,6 @@ function_stop()
     fi
     if [ -n "$(find "/sys/kernel/config/usb_gadget/$UDC/functions" -maxdepth 0 -type d -empty)" ];
     then
-        echo "Unregister: /sys/kernel/config/usb_gadget/$UDC"
         if [ -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409" ];
         then
             rmdir "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409"
