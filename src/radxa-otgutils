@@ -12,7 +12,7 @@ unlock_udc()
     exec 100<&-
 }
 
-add_udc()
+enable_udc()
 {
     if [[ -n $(cat "/sys/kernel/config/usb_gadget/$UDC/UDC") ]];
     then
@@ -113,7 +113,7 @@ function_stop()
             rmdir "/sys/kernel/config/usb_gadget/$UDC/strings/0x409"
         fi
     else
-        add_udc
+        enable_udc
     fi
 }
 
@@ -136,7 +136,7 @@ start()
             ;;
     esac
 
-    add_udc
+    enable_udc
     unlock_udc
 }
 
