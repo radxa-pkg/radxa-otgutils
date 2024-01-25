@@ -132,7 +132,7 @@ start()
             fi
             export service_adb_tcp_port=5555
             start-stop-daemon --start --oknodo --make-pidfile --pidfile /var/run/adbd.pid --startas /usr/bin/adbd --background
-            sleep 0
+            sleep 0.1
             ;;
     esac
 
