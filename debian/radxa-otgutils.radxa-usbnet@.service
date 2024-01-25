@@ -1,0 +1,13 @@
+[Unit]
+Description=Enable USB Ethernet on %i
+Documentation=https://github.com/radxa-pkg/radxa-otgutils/
+After=network.target
+
+[Service]
+RemainAfterExit=yes
+ExecStart=/usr/sbin/radxa-otgutils usbnet %i start
+ExecStop=/usr/sbin/radxa-otgutils usbnet %i stop
+ExecReload=/usr/sbin/radxa-otgutils usbnet %i reload
+
+[Install]
+WantedBy=multi-user.target

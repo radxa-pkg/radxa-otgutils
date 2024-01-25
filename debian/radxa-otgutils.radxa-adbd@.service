@@ -1,0 +1,13 @@
+[Unit]
+Description=Enable adbd on %i
+Documentation=https://github.com/radxa-pkg/radxa-otgutils/
+After=network.target
+
+[Service]
+RemainAfterExit=yes
+ExecStart=/usr/sbin/radxa-otgutils adbd %i start
+ExecStop=/usr/sbin/radxa-otgutils adbd %i stop
+ExecReload=/usr/sbin/radxa-otgutils adbd %i reload
+
+[Install]
+WantedBy=multi-user.target
