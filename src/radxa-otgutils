@@ -101,17 +101,17 @@ function_stop()
     if [ -n "$(find "/sys/kernel/config/usb_gadget/$UDC/functions" -maxdepth 0 -type d -empty)" ];
     then
         echo "Unregister: /sys/kernel/config/usb_gadget/$UDC"
-        if [ -e "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET" ];
+        if [ -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409" ];
         then
             rmdir "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409"
         fi
 
-        if [ -e "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET" ];
+        if [ -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1" ];
         then
             rmdir "/sys/kernel/config/usb_gadget/$UDC/configs/r.1"
         fi
 
-        if [ -e "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET" ];
+        if [ -e "/sys/kernel/config/usb_gadget/$UDC/strings/0x409" ];
         then
             rmdir "/sys/kernel/config/usb_gadget/$UDC/strings/0x409"
         fi
