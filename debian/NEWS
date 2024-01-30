@@ -1,0 +1,17 @@
+radxa-otgutils (0.3.0) stable; urgency=medium
+
+  radxa-otgutils was never supposed to be enabled and started on boot by
+  default. However, due to systemd enables all units according to the default
+  preset policy [1], they were nevertheless enabled by default.
+
+  Currently there is an issue where some services (like radxa-adbd) cannot be
+  enabled on mutiple UDC controllers. As such, existing services are updated to
+  take an UDC controller parameter to bind to that device. This has the side
+  effect that now services won't be enabled on first boot (due to missing
+  parameter).
+
+  rsetup > 0.3.44 contains the support to manage radxa-otgutils' services.
+
+  1: https://www.freedesktop.org/software/systemd/man/latest/systemd.preset.html
+
+ -- "Radxa Computer Co., Ltd" <dev@radxa.com>  Tue, 30 Jan 2024 16:39:56 +0800

@@ -67,7 +67,7 @@ clean-deb:
 #
 .PHONY: dch
 dch: debian/changelog
-	EDITOR=true gbp dch --commit --debian-branch=main --release --dch-opt=--upstream
+	EDITOR=true gbp dch --commit --debian-branch=main --release --dch-opt=--upstream --multimaint-merge
 
 .PHONY: deb
 deb: debian

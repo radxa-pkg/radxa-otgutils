@@ -1,3 +1,22 @@
+radxa-otgutils (0.3.0) stable; urgency=medium
+
+  [ ZHANG Yuntian ]
+  * Remove symlinks
+  * feat; update CI
+  * fix: fix issues found by pre-commit
+  * fix: suppress lintian warning
+
+  [ dependabot[bot] ]
+  * Bump actions/checkout from 3 to 4
+  * Bump actions/upload-artifact from 3 to 4
+  * Bump actions/download-artifact from 3 to 4
+
+  [ CodeChenL ]
+  * Add multi-UDC support (#7)
+  * Extended sleep time to fix adbd startup failure
+
+ -- "Radxa Computer Co., Ltd" <dev@radxa.com>  Tue, 30 Jan 2024 16:39:56 +0800
+
 radxa-otgutils (0.2.2) stable; urgency=medium
 
   [ ZHANG Yuntian ]
