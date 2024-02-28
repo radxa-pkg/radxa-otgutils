@@ -1,3 +1,10 @@
+radxa-otgutils (0.3.1) jammy; urgency=medium
+
+  [ ZHANG Yuntian ]
+  * Update adbd dependency
+
+ -- "Radxa Computer Co., Ltd" <dev@radxa.com>  Wed, 28 Feb 2024 08:21:07 +0000
+
 radxa-otgutils (0.3.0) stable; urgency=medium
 
   [ ZHANG Yuntian ]
