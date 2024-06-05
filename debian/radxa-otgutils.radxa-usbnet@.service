@@ -8,6 +8,8 @@ RemainAfterExit=yes
 ExecStart=/usr/sbin/radxa-otgutils usbnet %i start
 ExecStop=/usr/sbin/radxa-otgutils usbnet %i stop
 ExecReload=/usr/sbin/radxa-otgutils usbnet %i reload
+Restart=on-failure
+RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
