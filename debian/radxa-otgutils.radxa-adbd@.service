@@ -8,6 +8,8 @@ RemainAfterExit=yes
 ExecStart=/usr/sbin/radxa-otgutils adbd %i start
 ExecStop=/usr/sbin/radxa-otgutils adbd %i stop
 ExecReload=/usr/sbin/radxa-otgutils adbd %i reload
+Restart=on-failure
+RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
