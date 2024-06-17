@@ -1,0 +1,16 @@
+[Unit]
+Description=Enable USB CDC Network Control Model on %i
+Documentation=https://github.com/radxa-pkg/radxa-otgutils/
+After=network.target
+
+[Service]
+RemainAfterExit=yes
+ExecStart=/usr/sbin/radxa-otgutils ncm %i start
+ExecStop=/usr/sbin/radxa-otgutils ncm %i stop
+ExecReload=/usr/sbin/radxa-otgutils ncm %i reload
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+Also=radxa-udc@%i.service

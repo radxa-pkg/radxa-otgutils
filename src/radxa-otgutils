@@ -65,8 +65,8 @@ function_init()
         adbd)
             local GADGET="ffs.adb"
             ;;
-        usbnet)
-            local GADGET="ncm.usb0"
+        ecm|ncm)
+            local GADGET="$MODE.usb0"
             ;;
     esac
 
@@ -87,8 +87,8 @@ function_stop()
         adbd)
             local GADGET="ffs.adb"
             ;;
-        usbnet)
-            local GADGET="ncm.usb0"
+        ecm|ncm)
+            local GADGET="$MODE.usb0"
             ;;
     esac
 
@@ -136,7 +136,7 @@ start()
             start-stop-daemon --start --oknodo --make-pidfile --pidfile /var/run/adbd.pid --startas /usr/bin/adbd --background
             sleep 0.1
             ;;
-        usbnet)
+        ecm|ncm)
             configfs_init
             function_init
             ;;
@@ -158,7 +158,7 @@ stop()
             rmdir /dev/usb-ffs/adb
             rmdir /dev/usb-ffs
             ;;
-        usbnet)
+        ecm|ncm)
             function_stop
             ;;
         udc)
@@ -170,12 +170,12 @@ stop()
 
 MODE=""
 case "$1" in
-adbd|usbnet|udc)
+adbd|ecm|ncm|udc)
     MODE="$1"
     ;;
 *)
-    echo "Unknown mode. Valid values are adbd or usbnet."
-    echo "Usage: $0 <adbd|usbnet|udc> <UDC> <start|stop|restart>"
+    echo "Unknown mode. Valid values are adbd, ecm, ncm and udc."
+    echo "Usage: $0 <adbd|ecm|ncm|udc> <UDC> <start|stop|restart>"
     exit 1
 esac
 
@@ -185,7 +185,7 @@ then
     UDC="$2"
 else
     echo "This UDC does not exist, you can turn on the OTG port Peripheral mode device tree overlay at rsetup and look in the /sys/class/udc directory for."
-    echo "Usage: $0 <adbd|usbnet|udc> <UDC> <start|stop|restart>"
+    echo "Usage: $0 <adbd|ecm|ncm|udc> <UDC> <start|stop|restart>"
     exit 1
 fi
 
@@ -201,7 +201,7 @@ restart|reload)
     start
     ;;
 *)
-    echo "Usage: $0 <adbd|usbnet|udc> <UDC> <start|stop|restart>"
+    echo "Usage: $0 <adbd|ecm|ncm|udc> <UDC> <start|stop|restart>"
     exit 1
 esac
 

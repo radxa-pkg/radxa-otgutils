@@ -1,13 +1,13 @@
 [Unit]
-Description=Enable USB Ethernet on %i
+Description=Enable USB CDC Ethernet Control Model on %i
 Documentation=https://github.com/radxa-pkg/radxa-otgutils/
 After=network.target
 
 [Service]
 RemainAfterExit=yes
-ExecStart=/usr/sbin/radxa-otgutils usbnet %i start
-ExecStop=/usr/sbin/radxa-otgutils usbnet %i stop
-ExecReload=/usr/sbin/radxa-otgutils usbnet %i reload
+ExecStart=/usr/sbin/radxa-otgutils ecm %i start
+ExecStop=/usr/sbin/radxa-otgutils ecm %i stop
+ExecReload=/usr/sbin/radxa-otgutils ecm %i reload
 Restart=on-failure
 RestartSec=5s
 
