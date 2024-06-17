@@ -13,3 +13,4 @@ RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
+Also=radxa-udc@%i.service
