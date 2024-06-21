@@ -2,6 +2,8 @@
 Description=Enable adbd on %i
 Documentation=https://github.com/radxa-pkg/radxa-otgutils/
 After=network.target
+PropagatesReloadTo=radxa-udc@%i.service
+PropagatesStopTo=radxa-udc@%i.service
 
 [Service]
 RemainAfterExit=yes
