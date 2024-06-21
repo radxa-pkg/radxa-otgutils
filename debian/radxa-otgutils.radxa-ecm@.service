@@ -13,4 +13,5 @@ RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
+Alias=radxa-usbnet@%i.service
 Also=radxa-udc@%i.service
