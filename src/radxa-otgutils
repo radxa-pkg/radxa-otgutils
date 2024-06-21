@@ -123,10 +123,10 @@ function_stop()
 start()
 {
     lock_udc
+    configfs_init
+    function_init
     case "$MODE" in
         adbd)
-            configfs_init
-            function_init
             if [ ! -e "/dev/usb-ffs/adb" ] ;
             then
                 mkdir -p /dev/usb-ffs/adb
@@ -135,10 +135,6 @@ start()
             export service_adb_tcp_port=5555
             start-stop-daemon --start --oknodo --make-pidfile --pidfile /var/run/adbd.pid --startas /usr/bin/adbd --background
             sleep 0.1
-            ;;
-        ecm|ncm)
-            configfs_init
-            function_init
             ;;
         udc)
             enable_udc
@@ -150,16 +146,13 @@ start()
 stop()
 {
     lock_udc
+    function_stop
     case "$MODE" in
         adbd)
-            function_stop
             start-stop-daemon --stop --oknodo --pidfile /var/run/adbd.pid --remove-pidfile --retry 5
             umount /dev/usb-ffs/adb
             rmdir /dev/usb-ffs/adb
             rmdir /dev/usb-ffs
-            ;;
-        ecm|ncm)
-            function_stop
             ;;
         udc)
             disable_udc
