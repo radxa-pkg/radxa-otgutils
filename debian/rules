@@ -14,3 +14,5 @@ override_dh_installsystemd:
 	dh_installsystemd --name=radxa-ecm@
 	dh_installsystemd --name=radxa-ncm@
 	dh_installsystemd --name=radxa-udc@
+	dh_installsystemd --name=radxa-usbnet@
+	dh_installsystemd --remaining

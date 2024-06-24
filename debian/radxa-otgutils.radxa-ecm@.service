@@ -4,6 +4,8 @@ Documentation=https://github.com/radxa-pkg/radxa-otgutils/
 After=network.target
 PropagatesReloadTo=radxa-udc@%i.service
 PropagatesStopTo=radxa-udc@%i.service
+Requires=radxa-udc@%i.service
+Before=radxa-udc@%i.service
 
 [Service]
 RemainAfterExit=yes
@@ -16,4 +18,3 @@ RestartSec=5s
 [Install]
 WantedBy=multi-user.target
 Alias=radxa-usbnet@%i.service
-Also=radxa-udc@%i.service
