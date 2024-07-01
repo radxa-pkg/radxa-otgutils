@@ -1,0 +1,15 @@
+[Unit]
+Description=Enable UDC on %i
+Documentation=https://github.com/radxa-pkg/radxa-otgutils/
+After=network.target radxa-adbd@%i.service radxa-ncm@%i.service radxa-ecm@%i.service
+
+[Service]
+RemainAfterExit=yes
+ExecStart=/usr/sbin/radxa-otgutils udc %i start
+ExecStop=/usr/sbin/radxa-otgutils udc %i stop
+ExecReload=/usr/sbin/radxa-otgutils udc %i reload
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

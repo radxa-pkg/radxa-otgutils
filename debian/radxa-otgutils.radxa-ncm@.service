@@ -1,5 +1,5 @@
 [Unit]
-Description=Enable adbd on %i
+Description=Enable USB CDC Network Control Model on %i
 Documentation=https://github.com/radxa-pkg/radxa-otgutils/
 After=network.target
 PropagatesReloadTo=radxa-udc@%i.service
@@ -9,9 +9,9 @@ Before=radxa-udc@%i.service
 
 [Service]
 RemainAfterExit=yes
-ExecStart=/usr/sbin/radxa-otgutils adbd %i start
-ExecStop=/usr/sbin/radxa-otgutils adbd %i stop
-ExecReload=/usr/sbin/radxa-otgutils adbd %i reload
+ExecStart=/usr/sbin/radxa-otgutils ncm %i start
+ExecStop=/usr/sbin/radxa-otgutils ncm %i stop
+ExecReload=/usr/sbin/radxa-otgutils ncm %i reload
 Restart=on-failure
 RestartSec=5s
 

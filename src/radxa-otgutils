@@ -14,11 +14,16 @@ unlock_udc()
 
 enable_udc()
 {
+    disable_udc
+    echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
+}
+
+disable_udc()
+{
     if [[ -n $(cat "/sys/kernel/config/usb_gadget/$UDC/UDC") ]];
     then
         echo "" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
     fi
-    echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
 }
 
 configfs_make()
@@ -60,8 +65,8 @@ function_init()
         adbd)
             local GADGET="ffs.adb"
             ;;
-        usbnet)
-            local GADGET="ecm.usb0"
+        ecm|ncm)
+            local GADGET="$MODE.usb0"
             ;;
     esac
 
@@ -82,8 +87,8 @@ function_stop()
         adbd)
             local GADGET="ffs.adb"
             ;;
-        usbnet)
-            local GADGET="ecm.usb0"
+        ecm|ncm)
+            local GADGET="$MODE.usb0"
             ;;
     esac
 
@@ -112,8 +117,6 @@ function_stop()
         then
             rmdir "/sys/kernel/config/usb_gadget/$UDC/strings/0x409"
         fi
-    else
-        enable_udc
     fi
 }
 
@@ -122,7 +125,6 @@ start()
     lock_udc
     configfs_init
     function_init
-
     case "$MODE" in
         adbd)
             if [ ! -e "/dev/usb-ffs/adb" ] ;
@@ -134,9 +136,10 @@ start()
             start-stop-daemon --start --oknodo --make-pidfile --pidfile /var/run/adbd.pid --startas /usr/bin/adbd --background
             sleep 0.1
             ;;
+        udc)
+            enable_udc
+            ;;
     esac
-
-    enable_udc
     unlock_udc
 }
 
@@ -151,18 +154,21 @@ stop()
             rmdir /dev/usb-ffs/adb
             rmdir /dev/usb-ffs
             ;;
+        udc)
+            disable_udc
+            ;;
     esac
     unlock_udc
 }
 
 MODE=""
 case "$1" in
-adbd|usbnet)
+adbd|ecm|ncm|udc)
     MODE="$1"
     ;;
 *)
-    echo "Unknown mode. Valid values are adbd or usbnet."
-    echo "Usage: $0 <adbd|usbnet> <UDC> <start|stop|restart>"
+    echo "Unknown mode. Valid values are adbd, ecm, ncm and udc."
+    echo "Usage: $0 <adbd|ecm|ncm|udc> <UDC> <start|stop|restart>"
     exit 1
 esac
 
@@ -172,7 +178,7 @@ then
     UDC="$2"
 else
     echo "This UDC does not exist, you can turn on the OTG port Peripheral mode device tree overlay at rsetup and look in the /sys/class/udc directory for."
-    echo "Usage: $0 <adbd|usbnet> <UDC> <start|stop|restart>"
+    echo "Usage: $0 <adbd|ecm|ncm|udc> <UDC> <start|stop|restart>"
     exit 1
 fi
 
@@ -188,7 +194,7 @@ restart|reload)
     start
     ;;
 *)
-    echo "Usage: $0 <adbd|usbnet> <UDC> <start|stop|restart>"
+    echo "Usage: $0 <adbd|ecm|ncm|udc> <UDC> <start|stop|restart>"
     exit 1
 esac
 
