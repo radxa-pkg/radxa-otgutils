@@ -96,6 +96,7 @@ function_stop()
     then
         rmdir "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET"
     fi
+
     if [ -n "$(find "/sys/kernel/config/usb_gadget/$UDC/functions" -maxdepth 0 -type d -empty)" ];
     then
         if [ -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409" ];
@@ -112,6 +113,8 @@ function_stop()
         then
             rmdir "/sys/kernel/config/usb_gadget/$UDC/strings/0x409"
         fi
+
+        rmdir "/sys/kernel/config/usb_gadget/$UDC"
     else
         enable_udc
     fi
@@ -146,10 +149,16 @@ stop()
     function_stop
     case "$MODE" in
         adbd)
-            start-stop-daemon --stop --oknodo --pidfile /var/run/adbd.pid --remove-pidfile --retry 5
-            umount /dev/usb-ffs/adb
-            rmdir /dev/usb-ffs/adb
-            rmdir /dev/usb-ffs
+            if [[ -e /var/run/adbd.pid ]]; then
+                start-stop-daemon --stop --oknodo --pidfile /var/run/adbd.pid --remove-pidfile --retry 5
+            fi
+            if [ -e /dev/usb-ffs/adb ]; then
+                umount /dev/usb-ffs/adb
+                rmdir /dev/usb-ffs/adb
+            fi
+            if [ -e /dev/usb-ffs ]; then
+                rmdir /dev/usb-ffs
+            fi
             ;;
     esac
     unlock_udc
