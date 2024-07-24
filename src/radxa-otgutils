@@ -143,14 +143,13 @@ function_stop()
         fi
 
         rmdir "/sys/kernel/config/usb_gadget/$UDC"
-    else
-        enable_udc
     fi
 }
 
 start()
 {
     lock_udc
+    disable_udc
     function_init
     case "$MODE" in
         adbd)
@@ -187,6 +186,7 @@ stop()
             fi
             ;;
     esac
+    enable_udc
     unlock_udc
 }
 
