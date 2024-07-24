@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -e
+
+action="$1"
+
+if [ "$action" = upgrade ]
+then
+    # Delete broken links from < 0.3.0
+    for i in $(deb-systemd-invoke list-units --all radxa-usbnet.service radxa-adbd.service | awk '$3 == "not-found" {printf("%s ",$2)}') \
+             $(deb-systemd-invoke list-units --all radxa-usbnet.service radxa-adbd.service | awk '$2 == "loaded" && $3 != "units" {printf("%s ",$1)}'); do
+        template="$(echo "$i" | sed "s/.service/@.service/")"
+        echo "$i is no longer supported. Please use $template instead."
+        deb-systemd-helper disable "$i"
+    done
+fi
+
+#DEBHELPER#
+
+exit 0

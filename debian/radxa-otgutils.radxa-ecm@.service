@@ -1,14 +1,15 @@
 [Unit]
-Description=Enable adbd on %i
+Description=Enable USB CDC Ethernet Control Model on %i
 Documentation=https://github.com/radxa-pkg/radxa-otgutils/
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/sbin/radxa-otgutils adbd %i start
-ExecStop=/usr/sbin/radxa-otgutils adbd %i stop
+ExecStart=/usr/sbin/radxa-otgutils ecm %i start
+ExecStop=/usr/sbin/radxa-otgutils ecm %i stop
 Restart=on-failure
 RestartSec=5s
 
 [Install]
+Alias=radxa-usbnet@.service
 WantedBy=radxa-otgutils.target
