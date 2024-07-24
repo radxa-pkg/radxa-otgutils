@@ -35,35 +35,51 @@ disable_udc()
 
 configfs_make()
 {
-    if [ ! -e "/sys/kernel/config/usb_gadget/$UDC" ];
+    if [[ ! -e "/sys/kernel/config/usb_gadget/$UDC" ]];
     then
         modprobe libcomposite
         mkdir -p "/sys/kernel/config/usb_gadget/$UDC"
+        pushd "/sys/kernel/config/usb_gadget/$UDC"
+
+        echo "0x1d6b" > "idVendor"  # Linux Foundation
+        echo "0x0104" > "idProduct" # Multifunction Composite Gadget
+        echo "0x0100" > "bcdDevice" # v1.0.0
+        echo "0x0200" > "bcdUSB"    # USB 2.0
+        echo "0xEF" > "bDeviceClass"
+        echo "0x02" > "bDeviceSubClass"
+        echo "0x01" > "bDeviceProtocol"
+
+        popd
     fi
-}
+    if [[ ! -e "/sys/kernel/config/usb_gadget/$UDC/strings/0x409" ]];
+    then
+        mkdir -p "/sys/kernel/config/usb_gadget/$UDC/strings/0x409"
+        pushd "/sys/kernel/config/usb_gadget/$UDC/strings/0x409"
 
-configfs_init()
-{
-    pushd "/sys/kernel/config/usb_gadget/$UDC"
+        echo "0123456789ABCDEF" > "serialnumber"
+        echo "Radxa" > "manufacturer"
+        echo "OTG Utils" > "product"
 
-    echo "0x1d6b" > "idVendor"  # Linux Foundation
-    echo "0x0104" > "idProduct" # Multifunction Composite Gadget
-    echo "0x0100" > "bcdDevice" # v1.0.0
-    echo "0x0200" > "bcdUSB"    # USB 2.0
-    echo "0xEF" > "bDeviceClass"
-    echo "0x02" > "bDeviceSubClass"
-    echo "0x01" > "bDeviceProtocol"
+        popd
+    fi
+    if [[ ! -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1" ]];
+    then
+        mkdir -p "/sys/kernel/config/usb_gadget/$UDC/configs/r.1"
+        pushd "/sys/kernel/config/usb_gadget/$UDC/configs/r.1"
 
-    mkdir -p "strings/0x409"
-    echo "0123456789ABCDEF" > "strings/0x409/serialnumber"
-    echo "Radxa" > "strings/0x409/manufacturer"
-    echo "OTG Utils" > "strings/0x409/product"
+        echo "500" > "MaxPower"
 
-    mkdir -p "configs/r.1/strings/0x409"
-    echo "500" > "configs/r.1/MaxPower"
-    echo "USB Composite Device" > "configs/r.1/strings/0x409/configuration"
+        popd
+    fi
+    if [[ ! -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409" ]];
+    then
+        mkdir -p "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409"
+        pushd "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409"
 
-    popd
+        echo "USB Composite Device" > "configuration"
+
+        popd
+    fi
 }
 
 function_init()
@@ -135,9 +151,7 @@ function_stop()
 start()
 {
     lock_udc
-    configfs_init
     function_init
-
     case "$MODE" in
         adbd)
             if [ ! -e "/dev/usb-ffs/adb" ] ;
