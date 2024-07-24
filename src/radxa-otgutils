@@ -15,6 +15,12 @@ unlock_udc()
 enable_udc()
 {
     disable_udc
+    if [[ -z "$(find "/sys/kernel/config/usb_gadget/$UDC/functions" -mindepth 1 -maxdepth 1)" ]] && \
+        [[ -z "$(find "/sys/kernel/config/usb_gadget/$UDC/configs/r.1" -mindepth 1 -maxdepth 1)" ]]
+    then
+        echo "No functions defined, ignore enable UDC"
+        return 0
+    fi
     echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
 }
 
