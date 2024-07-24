@@ -93,12 +93,12 @@ function_init()
             ;;
     esac
 
-    if [ ! -e "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET" ];
+    if [[ ! -e "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET" ]];
     then
         mkdir -p "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET"
     fi
 
-    if [ ! -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/$GADGET" ];
+    if [[ ! -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/$GADGET" ]];
     then
         ln -s "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET" "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/$GADGET"
     fi
@@ -115,29 +115,29 @@ function_stop()
             ;;
     esac
 
-    if [ -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/$GADGET" ];
+    if [[ -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/$GADGET" ]];
     then
         rm "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/$GADGET"
     fi
 
-    if [ -e "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET" ];
+    if [[ -e "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET" ]];
     then
         rmdir "/sys/kernel/config/usb_gadget/$UDC/functions/$GADGET"
     fi
 
-    if [ -n "$(find "/sys/kernel/config/usb_gadget/$UDC/functions" -maxdepth 0 -type d -empty)" ];
+    if [[ -n "$(find "/sys/kernel/config/usb_gadget/$UDC/functions" -maxdepth 0 -type d -empty)" ]];
     then
-        if [ -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409" ];
+        if [[ -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409" ]];
         then
             rmdir "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/strings/0x409"
         fi
 
-        if [ -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1" ];
+        if [[ -e "/sys/kernel/config/usb_gadget/$UDC/configs/r.1" ]];
         then
             rmdir "/sys/kernel/config/usb_gadget/$UDC/configs/r.1"
         fi
 
-        if [ -e "/sys/kernel/config/usb_gadget/$UDC/strings/0x409" ];
+        if [[ -e "/sys/kernel/config/usb_gadget/$UDC/strings/0x409" ]];
         then
             rmdir "/sys/kernel/config/usb_gadget/$UDC/strings/0x409"
         fi
@@ -154,7 +154,8 @@ start()
     function_init
     case "$MODE" in
         adbd)
-            if [ ! -e "/dev/usb-ffs/adb" ] ;
+
+            if [[ ! -e "/dev/usb-ffs/adb" ]];
             then
                 mkdir -p /dev/usb-ffs/adb
                 mount -o uid=2000,gid=2000 -t functionfs adb /dev/usb-ffs/adb
@@ -164,7 +165,6 @@ start()
             sleep 0.1
             ;;
     esac
-
     enable_udc
     unlock_udc
 }
@@ -178,11 +178,11 @@ stop()
             if [[ -e /var/run/adbd.pid ]]; then
                 start-stop-daemon --stop --oknodo --pidfile /var/run/adbd.pid --remove-pidfile --retry 5
             fi
-            if [ -e /dev/usb-ffs/adb ]; then
+            if [[ -e /dev/usb-ffs/adb ]]; then
                 umount /dev/usb-ffs/adb
                 rmdir /dev/usb-ffs/adb
             fi
-            if [ -e /dev/usb-ffs ]; then
+            if [[ -e /dev/usb-ffs ]]; then
                 rmdir /dev/usb-ffs
             fi
             ;;
@@ -202,7 +202,7 @@ adbd|usbnet)
 esac
 
 UDC=""
-if [ -e "/sys/class/udc/$2" ];
+if [[ -e "/sys/class/udc/$2" ]];
 then
     UDC="$2"
 else
