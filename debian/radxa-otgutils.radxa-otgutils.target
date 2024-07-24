@@ -1,0 +1,7 @@
+[Unit]
+Description=Radxa USB OTG services
+Documentation=https://github.com/radxa-pkg/radxa-otgutils/
+After=network.target
+
+[Install]
+WantedBy=multi-user.target

@@ -11,4 +11,6 @@ override_dh_builddeb:
 
 override_dh_installsystemd:
 	dh_installsystemd --name=radxa-adbd@
-	dh_installsystemd --name=radxa-usbnet@
+	dh_installsystemd --name=radxa-ecm@
+	dh_installsystemd --name=radxa-ncm@
+	dh_installsystemd --name=radxa-otgutils
