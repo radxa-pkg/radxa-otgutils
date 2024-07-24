@@ -14,11 +14,17 @@ unlock_udc()
 
 enable_udc()
 {
-    if [[ -n $(cat "/sys/kernel/config/usb_gadget/$UDC/UDC") ]];
+    disable_udc
+    echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
+}
+
+disable_udc()
+{
+    if [[ -e "/sys/kernel/config/usb_gadget/$UDC/UDC" ]] && \
+        [[ -n "$(cat "/sys/kernel/config/usb_gadget/$UDC/UDC")" ]];
     then
         echo "" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
     fi
-    echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
 }
 
 configfs_make()
