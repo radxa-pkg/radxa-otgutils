@@ -2,15 +2,16 @@
 
 [![Build & Release](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/release.yml/badge.svg)](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/release.yml)
 
-Radxa USB OTG utility (radxa-otgutils) provides additional features over USB OTG port to facilitate easy cmmunication with another computer.
+Radxa USB OTG utility (radxa-otgutils) provides additional features over USB OTG port to facilitate easy communication with another computer.
 
 # Usage
 
 The following gadgets are supported:
 
 - radxa-adbd
-- radxa-usbnet
+- radxa-ecm (previously radxa-usbnet)
+- radxa-ncm
 
-They can be enabled with `sudo systemctl enable --now <gadget>`, and disabled with `sudo systemctl disable --now <gadget>`.
+They can be configured from [`rsetup`](https://github.com/radxa-pkg/rsetup) which is included in our systems.
 
-Please be aware than those gadgets are mutually exclusive. If one is already enabled you have to diable then reboot before you can enable anyther gadget.
+Optionally they can be enabled with `sudo systemctl enable --now <gadget>@<udc controller>`, and disabled with `sudo systemctl disable --now <gadget>@<udc controller>`.
