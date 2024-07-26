@@ -5,6 +5,7 @@ Priority: standard
 Standards-Version: 4.6.0
 Build-Depends: debhelper (>=12~),
                devscripts,
+               jq,
                lintian,
                pandoc,
                shellcheck,
