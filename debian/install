@@ -1,2 +1,3 @@
-src/radxa-otgutils /usr/sbin
+src/radxa-otgutils /usr/sbin/
+services.json /usr/share/radxa-otgutils/
 man/*.8 /usr/share/man/man8

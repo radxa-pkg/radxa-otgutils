@@ -18,7 +18,16 @@ test:
 # Build
 #
 .PHONY: build
-build: build-man build-doc
+build: build-man build-doc build-data
+
+
+DATA		:= services.json
+.PHONY: build-data
+build-data: $(DATA)
+
+.PHONY: services.json
+services.json:
+	ls debian/*.service | jq --raw-input '[., inputs] | map(ltrimstr("debian/$(PROJECT).") | rtrimstr(".service"))' > $@
 
 SRC-MAN		:=	man
 SRCS-MAN	:=	$(wildcard $(SRC-MAN)/*.md)
@@ -48,11 +57,15 @@ $(SRC-DOC)/SOURCE: $(SRC-DOC)
 distclean: clean
 
 .PHONY: clean
-clean: clean-man clean-doc clean-deb
+clean: clean-man clean-data clean-doc clean-deb
 
 .PHONY: clean-man
 clean-man:
 	rm -rf $(MANS)
+
+.PHONY: clean-data
+clean-data:
+	rm -rf $(DATA)
 
 .PHONY: clean-doc
 clean-doc:
