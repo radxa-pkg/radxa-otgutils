@@ -1,3 +1,27 @@
+radxa-otgutils (0.3.2) jammy; urgency=medium
+
+  [ dependabot[bot] ]
+  * Bump softprops/action-gh-release from 1 to 2
+
+  [ CodeChenL ]
+  * fix: restart otg service after it fails to start
+  * feat: add CODEOWNERS
+  * feat: create the reuse function disable_udc
+  * fix: udc is not enabled when function is empty
+  * refactor: merge configfs_init to configfs_make
+  * style: optimize bash syntax
+  * fix: optimize UDC on/off logic
+  * feat: rename usbnet to ecm and add ncm support
+  * fix: optimize systemd service files
+  * feat: add a service description file(services.json)
+
+  [ ZHANG Yuntian ]
+  * fix: safely clean up
+  * docs: add newly supported gadget
+  * ci: sync with rsetup
+
+ -- "Radxa Computer Co., Ltd" <dev@radxa.com>  Wed, 31 Jul 2024 11:37:35 +0800
+
 radxa-otgutils (0.3.1) jammy; urgency=medium
 
   [ ZHANG Yuntian ]
