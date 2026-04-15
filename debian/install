@@ -1,3 +1,4 @@
 src/radxa-otgutils /usr/sbin/
+src/presets/90-adbd.preset /usr/lib/systemd/system-preset/
 services.json /usr/share/radxa-otgutils/
 man/*.8 /usr/share/man/man8
