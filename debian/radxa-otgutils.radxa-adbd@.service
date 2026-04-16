@@ -1,6 +1,8 @@
 [Unit]
 Description=Enable adbd on %i
 Documentation=https://github.com/radxa-pkg/radxa-otgutils/
+Conflicts=adbd.service
+Before=adbd.service
 
 [Service]
 Type=oneshot
