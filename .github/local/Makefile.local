@@ -1,0 +1,34 @@
+test: shellcheck
+
+.PHONY: shellcheck
+shellcheck:
+	shellcheck --source-path=./src --external-sources src/radxa-otgutils
+
+main_build: build-man build-data
+
+SRC-MAN		:=	man
+SRCS-MAN	:=	$(wildcard $(SRC-MAN)/*.md)
+MANS		:=	$(SRCS-MAN:.md=)
+.PHONY: build-man
+build-man: $(MANS)
+
+$(SRC-MAN)/%: $(SRC-MAN)/%.md
+	pandoc "$<" -o "$@" --from markdown --to man -s
+
+DATA		:= services.json
+.PHONY: build-data
+build-data: $(DATA)
+
+.PHONY: services.json
+services.json:
+	ls debian/*.service | jq --raw-input '[., inputs] | map(ltrimstr("debian/$(PROJECT).") | rtrimstr(".service"))' > $@
+
+clean: clean-man clean-data
+
+.PHONY: clean-man
+clean-man:
+	rm -rf $(MANS)
+
+.PHONY: clean-data
+clean-data:
+	rm -rf $(DATA)
