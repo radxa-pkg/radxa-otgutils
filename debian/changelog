@@ -1,3 +1,21 @@
+radxa-otgutils (0.3.3) jammy; urgency=medium
+
+  [ CodeChenL ]
+  * feat: add pkg.conf.template
+
+  [ Zhaoming Luo ]
+  * feat: update adbd dependency
+  * fix: radxa-otgutils depends on *adbd*
+  * fix: disable adbd in systemd preset
+  * fix: use systemd Conflicts= to avoid conflict with adbd.service
+  * fix: use which command to find adbd path
+
+  [ ZHANG Yuntian ]
+  * chore: remove deprecated workflows
+  * fix: restore build
+
+ -- "Radxa Computer Co., Ltd" <dev@radxa.com>  Wed, 22 Apr 2026 07:40:54 +0000
+
 radxa-otgutils (0.3.2) jammy; urgency=medium
 
   [ dependabot[bot] ]
