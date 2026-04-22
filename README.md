@@ -1,17 +1,9 @@
 # radxa-otgutils
 
-[![Build & Release](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/release.yml/badge.svg)](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/release.yml)
+[![Release](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/release.yaml/badge.svg)](https://github.com/radxa-pkg/radxa-otgutils/actions/workflows/release.yaml)
 
-Radxa USB OTG utility (radxa-otgutils) provides additional features over USB OTG port to facilitate easy communication with another computer.
+## Build
 
-# Usage
-
-The following gadgets are supported:
-
-- radxa-adbd
-- radxa-ecm (previously radxa-usbnet)
-- radxa-ncm
-
-They can be configured from [`rsetup`](https://github.com/radxa-pkg/rsetup) which is included in our systems.
-
-Optionally they can be enabled with `sudo systemctl enable --now <gadget>@<udc controller>`, and disabled with `sudo systemctl disable --now <gadget>@<udc controller>`.
+1. `git clone --recurse-submodules https://github.com/radxa-pkg/radxa-otgutils.git`
+2. Open in [`devcontainer`](https://code.visualstudio.com/docs/devcontainers/containers)
+3. `make deb`
