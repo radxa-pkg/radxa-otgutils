@@ -11,12 +11,12 @@
   # https://devenv.sh/packages/
   packages = with pkgs; [
     bash-completion
+    gettext
     git-buildpackage
     mdbook
-    mdbook-admonish
     mdbook-cmdrun
     mdbook-i18n-helpers
-    mdbook-linkcheck
+    mdbook-linkcheck2
     mdbook-toc
     ncurses
   ];
@@ -29,7 +29,12 @@
         entry = lib.mkForce "${pkgs.shellcheck}/bin/shellcheck -x";
       };
       shfmt.enable = true;
-      statix.enable = true;
+      statix = {
+        enable = true;
+        settings.ignore = [
+          ".devcontainer"
+        ];
+      };
       typos = {
         enable = true;
         excludes = [
@@ -45,3 +50,4 @@
 
   starship.enable = true;
 }
+
