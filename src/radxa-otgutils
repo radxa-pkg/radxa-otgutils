@@ -160,8 +160,15 @@ start()
                 mount -o uid=2000,gid=2000 -t functionfs adb /dev/usb-ffs/adb
             fi
             export service_adb_tcp_port=5555
-            start-stop-daemon --start --oknodo --make-pidfile --pidfile /var/run/adbd.pid --startas "$(which adbd)" --background
+            start-stop-daemon --start --oknodo --make-pidfile --pidfile /run/adbd.pid --startas "$(which adbd)" --background
+            # adbd must open functionfs before UDC is bound.
             sleep 0.1
+            if ! start-stop-daemon --status --pidfile /run/adbd.pid;
+            then
+                echo "adbd failed to start" >&2
+                unlock_udc
+                exit 1
+            fi
             ;;
     esac
     enable_udc
@@ -174,8 +181,8 @@ stop()
     function_stop
     case "$MODE" in
         adbd)
-            if [[ -e /var/run/adbd.pid ]]; then
-                start-stop-daemon --stop --oknodo --pidfile /var/run/adbd.pid --remove-pidfile --retry 5
+            if [[ -e /run/adbd.pid ]]; then
+                start-stop-daemon --stop --oknodo --pidfile /run/adbd.pid --remove-pidfile --retry 5
             fi
             if [[ -e /dev/usb-ffs/adb ]]; then
                 umount /dev/usb-ffs/adb
