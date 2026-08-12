@@ -6,7 +6,7 @@ action="$1"
 
 if [ "$action" = configure ]
 then
-    deb-systemd-invoke daemon-reload -q
+    deb-systemd-invoke daemon-reload 2>/dev/null || true
 
     # radxa-usbnet@ renamed to radxa-ecm@ in 0.3.2
     # Can't use `deb-systemd-helper enable "radxa-ecm@$udc.service"` in preinst due to
@@ -23,11 +23,11 @@ then
         # Can't use `deb-systemd-helper enable "$i"` due to
         # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=801822
         if [ -d /run/systemd/system ]; then
-            systemctl enable "$ecm"
+            deb-systemd-invoke enable "$ecm" 2>/dev/null || true
         fi
     done
 
-    deb-systemd-invoke daemon-reload -q
+    deb-systemd-invoke daemon-reload 2>/dev/null || true
 fi
 
 #DEBHELPER#
