@@ -6,7 +6,7 @@ action="$1"
 
 if [ "$action" = configure ]
 then
-    deb-systemd-invoke daemon-reload -q
+    deb-systemd-invoke daemon-reload || true
 
     # radxa-usbnet@ renamed to radxa-ecm@ in 0.3.2
     # Can't use `deb-systemd-helper enable "radxa-ecm@$udc.service"` in preinst due to
@@ -27,7 +27,7 @@ then
         fi
     done
 
-    deb-systemd-invoke daemon-reload -q
+    deb-systemd-invoke daemon-reload || true
 fi
 
 #DEBHELPER#
