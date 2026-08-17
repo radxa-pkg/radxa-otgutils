@@ -21,7 +21,7 @@ build-data: $(DATA)
 
 .PHONY: services.json
 services.json:
-	ls debian/*.service | jq --raw-input '[., inputs] | map(ltrimstr("debian/$(PROJECT).") | rtrimstr(".service"))' > $@
+	ls debian/radxa-otgutils.*.service | jq --raw-input '[., inputs] | map(ltrimstr("debian/$(PROJECT).") | rtrimstr(".service"))' > $@
 
 clean: clean-man clean-data
 
