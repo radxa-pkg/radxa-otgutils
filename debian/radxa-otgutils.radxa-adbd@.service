@@ -3,7 +3,9 @@ Description=Enable adbd on %i
 Documentation=https://github.com/radxa-pkg/radxa-otgutils/
 ConditionPathIsSymbolicLink=/sys/class/udc/%i
 Conflicts=adbd.service
+After=radxa-adbd@%i.service
 Before=adbd.service
+Wants=radxa-adbd-monitor@%i.service
 
 [Service]
 Type=oneshot

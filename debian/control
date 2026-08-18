@@ -16,7 +16,17 @@ Section: admin
 Priority: standard
 Depends: ${misc:Depends},
          adbd | rockchip-adbd-provider | android-tools-adbd,
+         radxa-otgutils-helper,
 Description: Radxa USB OTG utility
  Radxa USB OTG utility (radxa-otgutils) provides additional
  features over USB OTG port to facilitate easy communication
  with another computer.
+
+Package: radxa-otgutils-helper
+Architecture: all
+Section: admin
+Priority: standard
+Depends: ${misc:Depends},
+         inotify-tools,
+Description: Radxa USB OTG utility helper
+ Internal tools used by radxa-otgutils.

@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+shopt -s nullglob
+
+wait_till_reconnect() {
+    local is_connected new_state
+    is_connected="$(<"/sys/class/udc/$UDC/state")"
+
+    coproc inotifywait -r -m -e modify "/sys/class/udc/$UDC/state"
+
+    while read -r -u "${COPROC[0]}"; do
+        new_state="$(<"/sys/class/udc/$UDC/state")"
+        case "$new_state" in
+            "configured")
+                if [[ "$is_connected" != "$new_state" ]];
+                then
+                    kill "$COPROC_PID"
+                    return
+                fi
+                ;;
+            *)
+                is_connected="$new_state"
+                ;;
+        esac
+    done
+}
+
+start() {
+    while true; do
+        wait_till_reconnect
+        echo "Detected reconnection event." >&2
+        systemctl restart "radxa-adbd@${UDC}.service"
+        sleep 1
+    done
+}
+
+stop() {
+    :
+}
+
+UDC=""
+if [[ -e "/sys/class/udc/$1" ]];
+then
+    UDC="$1"
+else
+    echo "This UDC does not exist, you can turn on the OTG port Peripheral mode device tree overlay at rsetup and look in the /sys/class/udc directory for."
+    echo "Usage: $0 <UDC> <start|stop|restart>"
+    exit 1
+fi
+
+case "$2" in
+start)
+    start
+    ;;
+stop)
+    stop
+    ;;
+restart|reload)
+    stop
+    start
+    ;;
+*)
+    echo "Usage: $0 <UDC> <start|stop|restart>"
+    exit 1
+esac
+
+exit 0

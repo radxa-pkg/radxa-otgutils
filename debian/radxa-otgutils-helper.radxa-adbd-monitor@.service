@@ -1,0 +1,16 @@
+[Unit]
+Description=Restart radxa-adbd service on %i recoonection
+Documentation=https://github.com/radxa-pkg/radxa-otgutils/
+ConditionPathIsSymbolicLink=/sys/class/udc/%i
+Before=radxa-adbd@%i.service
+Wants=radxa-adbd@%i.service
+
+[Service]
+Type=simple
+ExecStart=/usr/libexec/radxa-otgutils-helper/radxa-adbd-monitor %i start
+ExecStop=/usr/libexec/radxa-otgutils-helper/radxa-adbd-monitor %i stop
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=radxa-otgutils.target
