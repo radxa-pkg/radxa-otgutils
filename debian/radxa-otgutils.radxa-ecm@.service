@@ -1,6 +1,7 @@
 [Unit]
 Description=Enable USB CDC Ethernet Control Model on %i
 Documentation=https://github.com/radxa-pkg/radxa-otgutils/
+ConditionPathIsSymbolicLink=/sys/class/udc/%i
 
 [Service]
 Type=oneshot
