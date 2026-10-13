@@ -24,6 +24,39 @@ enable_udc()
     echo "$UDC" > "/sys/kernel/config/usb_gadget/$UDC/UDC"
 }
 
+enable_adbd()
+{
+    local attempt running=0 error=""
+
+    for ((attempt = 0; attempt <= 100; attempt++));
+    do
+        # start-stop-daemon creates the pidfile asynchronously with --background.
+        if [[ -s /run/adbd.pid ]] && start-stop-daemon --status --pidfile /run/adbd.pid;
+        then
+            running=1
+
+            # Endpoint creation can precede descriptor readiness; retry binding too.
+            # Keep the unbind error check in the adbd path under the UDC lock.
+            if [[ -e /dev/usb-ffs/adb/ep1 && -e /dev/usb-ffs/adb/ep2 ]] && \
+                error=$({ disable_udc && enable_udc; } 2>&1);
+            then
+                return 0
+            fi
+        elif ((running));
+        then
+            echo "adbd exited before FunctionFS was ready" >&2
+            return 1
+        fi
+        if ((attempt < 100));
+        then
+            sleep 0.1
+        fi
+    done
+
+    echo "Timed out waiting for adbd FunctionFS on $UDC${error:+: $error}" >&2
+    return 1
+}
+
 disable_udc()
 {
     if [[ -e "/sys/kernel/config/usb_gadget/$UDC/UDC" ]] && \
@@ -161,17 +194,16 @@ start()
             fi
             export service_adb_tcp_port=5555
             start-stop-daemon --start --oknodo --make-pidfile --pidfile /run/adbd.pid --startas "$(which adbd)" --background
-            # adbd must open functionfs before UDC is bound.
-            sleep 0.1
-            if ! start-stop-daemon --status --pidfile /run/adbd.pid;
+            if ! enable_adbd;
             then
-                echo "adbd failed to start" >&2
                 unlock_udc
                 exit 1
             fi
             ;;
+        ecm|ncm)
+            enable_udc
+            ;;
     esac
-    enable_udc
     unlock_udc
 }
 
