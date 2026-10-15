@@ -1,3 +1,20 @@
+radxa-otgutils (0.3.4) jammy; urgency=medium
+
+  [ ZHANG Yuntian ]
+  * Add 'resolute' and 'resolute-test' to pkg.conf.template
+  * fix: use FHS /run path and check adbd is running
+  * fix: allow package to be installed in chroot
+  * fix: only track radxa-otgutils services
+  * fix: exclude intermediate files for all packages
+  * fixup! fix: allow package to be installed in chroot
+  * fix: only enable services when required UDC is available
+  * fix: add a daemon to restart adbd
+
+  [ Xinming Chen ]
+  * fix: wait for adbd readiness before binding UDC
+
+ -- "Radxa Computer (Shenzhen) Co., Ltd." <dev@radxa.com>  Thu, 15 Oct 2026 06:21:32 +0000
+
 radxa-otgutils (0.3.3) jammy; urgency=medium
 
   [ CodeChenL ]
