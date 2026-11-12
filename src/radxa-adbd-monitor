@@ -3,6 +3,44 @@
 set -euo pipefail
 shopt -s nullglob
 
+# shortcut: matches this adbd StopWorker/wchan signature; revalidate on adbd or kernel changes.
+wait_till_stalled() {
+    local pid="" previous_pid="" count=0 task name stalled
+
+    while sleep 1; do
+        stalled=0
+        if [[ -L "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/ffs.adb" ]] && \
+            pid=$(cat /run/adbd.pid 2>/dev/null) && [[ "$pid" =~ ^[0-9]+$ ]];
+        then
+            for task in /proc/"$pid"/task/*; do
+                if read -r name 2>/dev/null < "$task/comm" && \
+                    [[ "$name" == UsbFfs-monitor ]] && \
+                    [[ "$(cat "$task/wchan" 2>/dev/null)" == hrtimer_nanosleep ]];
+                then
+                    stalled=1
+                    break
+                fi
+            done
+        else
+            pid=""
+        fi
+
+        if [[ "$pid" != "$previous_pid" ]]; then
+            count=0
+        fi
+        previous_pid="$pid"
+
+        if ((stalled)); then
+            if ((++count >= 3)); then
+                return
+            fi
+        else
+            count=0
+        fi
+    done
+    return 1
+}
+
 wait_till_reconnect() {
     local is_connected new_state
     is_connected="$(<"/sys/class/udc/$UDC/state")"
@@ -27,6 +65,16 @@ wait_till_reconnect() {
 }
 
 start() {
+    if grep -zFxq -e 'allwinner,sun60i-a733' -e 'arm,sun60iw2p1' \
+        /proc/device-tree/compatible 2>/dev/null;
+    then
+        while wait_till_stalled; do
+            echo "Detected stalled adbd USB teardown." >&2
+            systemctl try-restart "radxa-adbd@${UDC}.service"
+        done
+        return
+    fi
+
     while true; do
         wait_till_reconnect
         echo "Detected reconnection event." >&2
