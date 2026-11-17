@@ -268,8 +268,9 @@ esac
 
 # Restart outside the UDC lock because the adbd service takes the same lock.
 if [[ "$MODE" != adbd && -L "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/ffs.adb" ]] && \
-    grep -zFxq -e 'allwinner,sun60i-a733' -e 'arm,sun60iw2p1' \
-        /proc/device-tree/compatible 2>/dev/null;
+    grep -zFxq -e 'Radxa Cubie A7A' -e 'Radxa Cubie A7S' \
+        -e 'Radxa Cubie A7Z' -e 'Radxa CM A7 with RPi CM5 IO Board' \
+        /proc/device-tree/model 2>/dev/null;
 then
     systemctl try-restart "radxa-adbd@$UDC.service"
 fi
