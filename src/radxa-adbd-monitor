@@ -65,8 +65,9 @@ wait_till_reconnect() {
 }
 
 start() {
-    if grep -zFxq -e 'allwinner,sun60i-a733' -e 'arm,sun60iw2p1' \
-        /proc/device-tree/compatible 2>/dev/null;
+    if grep -zFxq -e 'Radxa Cubie A7A' -e 'Radxa Cubie A7S' \
+        -e 'Radxa Cubie A7Z' -e 'Radxa CM A7 with RPi CM5 IO Board' \
+        /proc/device-tree/model 2>/dev/null;
     then
         while wait_till_stalled; do
             echo "Detected stalled adbd USB teardown." >&2
