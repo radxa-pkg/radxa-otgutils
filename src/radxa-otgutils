@@ -1,5 +1,8 @@
 #!/bin/bash -e
 
+# shellcheck source=/dev/null
+source "/usr/lib/rsetup/mod/hwid.sh"
+
 lock_udc()
 {
     configfs_make
@@ -268,9 +271,8 @@ esac
 
 # Restart outside the UDC lock because the adbd service takes the same lock.
 if [[ "$MODE" != adbd && -L "/sys/kernel/config/usb_gadget/$UDC/configs/r.1/ffs.adb" ]] && \
-    grep -zFxq -e 'Radxa Cubie A7A' -e 'Radxa Cubie A7S' \
-        -e 'Radxa Cubie A7Z' -e 'Radxa CM A7 with RPi CM5 IO Board' \
-        /proc/device-tree/model 2>/dev/null;
+    get_product_id | grep -Fxq -e 'radxa-cubie-a7a' -e 'radxa-cubie-a7s' \
+        -e 'radxa-cubie-a7z' -e 'radxa-cm-a7-rpi-cm5-io';
 then
     systemctl try-restart "radxa-adbd@$UDC.service"
 fi
