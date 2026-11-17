@@ -3,9 +3,6 @@
 set -euo pipefail
 shopt -s nullglob
 
-# shellcheck source=/dev/null
-source "/usr/lib/rsetup/mod/hwid.sh"
-
 # shortcut: matches this adbd StopWorker/wchan signature; revalidate on adbd or kernel changes.
 wait_till_stalled() {
     local pid="" previous_pid="" count=0 task name stalled
@@ -68,7 +65,7 @@ wait_till_reconnect() {
 }
 
 start() {
-    if get_product_id | grep -Fxq -e 'radxa-cubie-a7a' -e 'radxa-cubie-a7s' \
+    if rsetup get_product_id | grep -Fxq -e 'radxa-cubie-a7a' -e 'radxa-cubie-a7s' \
         -e 'radxa-cubie-a7z' -e 'radxa-cm-a7-rpi-cm5-io';
     then
         while wait_till_stalled; do
