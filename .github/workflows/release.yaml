@@ -9,6 +9,7 @@ jobs:
       with:
         fetch-depth: 0
         fetch-tags: true
+        lfs: true
         submodules: "recursive"
     - name: "Set up QEMU Emulation"
       uses: "docker/setup-qemu-action@v4"
