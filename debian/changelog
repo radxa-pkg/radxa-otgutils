@@ -1,3 +1,14 @@
+radxa-otgutils (0.3.5) jammy; urgency=medium
+
+  [ Feng Zhang ]
+  * fix: recover adbd after USB network gadget changes on A733
+  * fix: recover stalled adbd USB teardown on A733
+  * fix: identify A733 devices by model
+  * fix: use rsetup for A733 device identification
+  * fix: use rsetup CLI for device identification
+
+ -- "Radxa Computer (Shenzhen) Co., Ltd." <dev@radxa.com>  Thu, 19 Nov 2026 07:57:46 +0000
+
 radxa-otgutils (0.3.4) jammy; urgency=medium
 
   [ ZHANG Yuntian ]
